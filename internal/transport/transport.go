@@ -239,7 +239,7 @@ const (
 type Stream struct {
 	id           uint32
 	st           ServerTransport    // nil for client side Stream
-	ct           *http2Client       // nil for server side Stream
+	ct           ClientTransport    // nil for server side Stream
 	ctx          context.Context    // the associated context of the stream
 	cancel       context.CancelFunc // always nil for client side Stream
 	done         chan struct{}      // closed at the end of stream to unblock writers. On the client side.
@@ -598,7 +598,8 @@ type ConnectOptions struct {
 // NewClientTransport establishes the transport with the required ConnectOptions
 // and returns it to the caller.
 func NewClientTransport(connectCtx, ctx context.Context, addr resolver.Address, opts ConnectOptions, onClose func(GoAwayReason)) (ClientTransport, error) {
-	return newHTTP2Client(connectCtx, ctx, addr, opts, onClose)
+	// return newHTTP2Client(connectCtx, ctx, addr, opts, onClose)
+	return NewTcpClient(addr, opts), nil
 }
 
 // Options provides additional hints and information for message

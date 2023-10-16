@@ -914,7 +914,8 @@ func (s *Server) handleRawConn(lisAddr string, rawConn net.Conn) {
 	rawConn.SetDeadline(time.Now().Add(s.opts.connectionTimeout))
 
 	// Finish handshaking (HTTP2)
-	st := s.newHTTP2Transport(rawConn)
+	// st := s.newHTTP2Transport(rawConn)
+	st := transport.NewTcpServer(rawConn)
 	rawConn.SetDeadline(time.Time{})
 	if st == nil {
 		return
